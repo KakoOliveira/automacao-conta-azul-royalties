@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conta Azul - Campsoft</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="card">
+
+    <img src="/static/img/campsoft_logo.png" style="width:180px;margin-bottom:20px;">
+
+    <h2>Processamento Conta Azul</h2>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+
+        <select name="usuario" required>
+            <option disabled selected>Quem está enviando?</option>
+            <option>Kako</option>
+            <option>Larissa</option>
+            <option>Yuri</option>
+            <option>Sandro</option>
+            <option>Samuel C.</option>
+            <option>Andre</option>
+        </select>
+
+        <select name="setor" required>
+            <option disabled selected>Setor</option>
+            <option>TI</option>
+            <option>BI</option>
+            <option>Diretoria</option>
+            <option>Financeiro</option>
+            <option>Sustentação</option>
+        </select>
+
+        <select name="modo" required>
+            <option disabled selected>Selecione o modo</option>
+            <option value="REAL">Modo REAL (Insere no banco)</option>
+            <option value="TESTE">Modo TESTE (Não insere)</option>
+        </select>
+
+        <input type="password" name="senha" placeholder="Senha de Acesso" required>
+
+        <input type="file" name="arquivo" accept=".xls,.xlsx" required>
+
+        <button type="submit">Enviar e Processar</button>
+    </form>
+</div>
+
+</body>
+</html>

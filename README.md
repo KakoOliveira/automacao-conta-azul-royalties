@@ -1,64 +1,46 @@
-⚙️ Automação Conta Azul — Extrato Financeiro → Royalties | Campsoft
-
-Automação avançada desenvolvida para processar o **extrato financeiro do Conta Azul**, validar dados, realizar limpeza inteligente, detectar duplicidades, gerar hash único por transação e **inserir os resultados diretamente no banco de dados MySQL do Tocalivros** para uso no painel de **Royalties**.  
-
-> 🔒 Aplicação com upload seguro + autenticação + logs detalhados  
-> 🟦 Desenvolvido em Python + Flask  
-> 🗄️ Integração com MySQL  
-> 📊 Otimizada para uso interno da Campsoft  
+🤖💰 Automação Conta Azul – Royalties  
+Sistema moderno em Flask para processar extratos financeiros, gerar logs e atualizar os dados de royalties de forma automatizada.
 
 ---
 
-🚀 Funcionalidades Principais
+🔍 Sobre o Projeto
 
-🔹 Upload seguro do arquivo `.xls`
-O usuário faz o upload do extrato e o sistema renomeia automaticamente para `extrato_financeiro.xls`.
-
-🔹 Execução automática do processador
-O Flask roda o script:
-
-```
-processa_conta_azul.py <arquivo> <usuario> <setor>
-```
-
-🔹 Logs completos
-A interface exibe todos os logs retornados pelo script:
-- registros processados  
-- duplicidades encontradas  
-- dados inseridos  
-- datas e hash únicos  
-
-🔹 Controle de acesso
-Senha padrão configurada:
-
-```
-PASSWORD = "Campsoft123"
-```
-
-(ambiente real recomenda usar variáveis de ambiente 🔐)
+Este projeto foi criado para **automatizar o processamento de extratos do Conta Azul**, realizar tratamentos necessários e enviar os dados estruturados para uso interno.  
+A automação reduz erros manuais, garante consistência e facilita o acompanhamento financeiro.
 
 ---
 
-🧠 Estrutura do Projeto
+🚀 Tecnologias Utilizadas
+
+- **Python 3**  
+- **Flask**  
+- **Subprocess** (execução do script principal)  
+- **HTML/CSS**  
+- **Pandas / NumPy** (usados dentro do script processador)  
+- **MySQL Connector** (no script processador, quando aplicável)
+
+---
+
+🗂 Estrutura do Projeto
 
 ```
 automacao-conta-azul-royalties/
 │
-├── app.py                     # Servidor Flask
-├── processa_conta_azul.py     # Script principal de processamento
-│
-├── uploads/                   # Pasta onde o extrato é salvo
-│
+├── app.py                       # Aplicação Flask
+├── processa_conta_azul.py       # Script responsável pelo processamento
+├── uploads/                     # Onde o arquivo enviado é salvo
 ├── templates/
-│   ├── index.html             # Página de upload
-│   ├── processamento.html     # Exibição dos logs
-│
+│     ├── index.html             # Página inicial (upload + dados)
+│     └── processamento.html     # Página de logs
 └── README.md
 ```
 
 ---
 
-🖥️ Código Completo do Servidor Flask
+🖥 Código da Aplicação (Flask)
+
+Abaixo está o código usado na aplicação web.  
+**Sem nenhum dado sensível**, pronto para colar no projeto:
 
 ```python
 from flask import Flask, render_template, request
@@ -68,15 +50,13 @@ import subprocess
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = "uploads"
 
-PASSWORD = "Campsoft123"
+PASSWORD = "SUA_SENHA_AQUI"  # Defina sua senha manualmente depois
 
 os.makedirs("uploads", exist_ok=True)
-
 
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -97,7 +77,6 @@ def upload():
     caminho_salvo = os.path.join("uploads", "extrato_financeiro.xls")
     arquivo.save(caminho_salvo)
 
-    # Executa o script e captura logs
     process = subprocess.Popen(
         ["python", "processa_conta_azul.py", caminho_salvo, usuario, setor],
         stdout=subprocess.PIPE,
@@ -115,56 +94,67 @@ def upload():
         logs=logs
     )
 
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
 ```
 
 ---
 
-🛠️ Como Rodar Localmente
+📦 Como Rodar o Projeto
 
 1️⃣ Instalar dependências
 ```
-pip install flask mysql-connector-python pandas tkinterdnd2
+pip install flask pandas numpy mysql-connector-python
 ```
 
-2️⃣ Iniciar o servidor
+2️⃣ Executar a aplicação
 ```
 python app.py
 ```
 
-3️⃣ Acessar no navegador
+3️⃣ Acessar no navegador  
 ```
-http://localhost:5000
-```
-
----
-
-## 🔒 Segurança Recomendada
-Substituir a senha fixa por variável de ambiente:
-
-```python
-PASSWORD = os.getenv("SENHA_AUTOMACAO")
-```
-
-E no Windows PowerShell:
-```
-setx SENHA_AUTOMACAO "MinhaSenhaUltraSegura"
+http://127.0.0.1:5000
 ```
 
 ---
 
-🧑‍💻 Autor
+📁 Upload do Extrato
 
-Kako Oliveira 
-Desenvolvedor Python | Automações | Integrações Campsoft  
-📍 Mauá — SP  
-🐙 GitHub: https://github.com/KakoOliveira
+O sistema aceita o arquivo extrato_financeiro.xls, salva automaticamente em `/uploads` e dispara o script `processa_conta_azul.py`.
+
+Toda a saída do processamento aparece limpa na tela final.
 
 ---
 
-## 📌 Licença
+📝 Logs em Tempo Real
 
-Uso interno — Campsoft / Tocalivros.
+Após o upload, o sistema:
+
+1. Envia o arquivo para o script principal  
+2. Captura toda saída em `stdout`  
+3. Exibe os logs na tela de forma organizada  
+
+Ideal para auditoria e acompanhamento.
+
+---
+
+🔒 Segurança
+
+- Senha de acesso configurável  
+- Scripts isolados  
+- Sem armazenamento permanente de dados  
+- Extratos processados apenas localmente  
+
+> Obs.: Lembre-se de substituir `SUA_SENHA_AQUI` pela senha real apenas no seu ambiente privado.
+
+---
+
+👨‍💻 Autor
+
+Kako Oliveira  
+Especialista em Automação, Dados e Desenvolvimento Python.  
+
+
+
 
